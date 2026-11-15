@@ -92,12 +92,22 @@ streamlit run app.py
 
 ## Repo structure (target)
 
-```
-app.py
-data/raw/                  # source CSV
-data/processed/            # train.csv, test.csv
-models/                    # model.pkl
-ARCHITECTURE.md            # architecture & interface contract
-CONTRIBUTING.md            # workflow rules
-requirements.txt           # pinned deps (for deploy)
+Full agreed layout lives in **[`ARCHITECTURE.md` §1 — Repo layout (agreed paths)](./ARCHITECTURE.md#1-repo-layout-agreed-paths)** (source of truth). Summary:
+
+```text
+.
+├── data/
+│   ├── raw/                       # cambodia_inflation_2005_2025.csv
+│   └── processed/                 # train.csv, test.csv
+├── models/                        # model.pkl
+├── notebooks/                     # optional exploration
+├── pages/                         # Streamlit multi-page app
+│   ├── 1_📈_Historical_Trends.py
+│   ├── 2_🔮_Risk_Forecast.py
+│   └── 3_📊_Model_Metrics.py
+├── app.py                         # Streamlit entrypoint (home)
+├── utils.py                       # shared data/model loading
+├── requirements.txt               # pinned deps for deploy
+├── ARCHITECTURE.md                # architecture & interface contract
+└── CONTRIBUTING.md                # workflow rules
 ```
