@@ -50,11 +50,11 @@
 - `data/processed/test.csv`
 
 **To fill in when data work lands (Data Engineer updates via PR):**
-- Date column name & format: `TBD`
-- Feature columns (exact names, in order): `TBD`
-- Target column name & meaning (e.g. `risk_label` 1/0, threshold rule): `TBD`
-- Split point/date: `TBD`
-- Rows dropped/imputed due to lags: `TBD`
+- Date column name & format: `Date` — `dd/mm/yyyy` (e.g. `1/1/2005`)
+- Feature columns (exact names, in order): `Date, CPI_all_item, MoM_Change_CPI_all_item, YoY_Change_CPI_all_item, CPI_3_Month_Moving_Avg, CPI_12_Month_Moving_Avg, YoY_3_Month_Avg, YoY_12_Month_Avg`
+- Target column name & meaning (e.g. `risk_label` 1/0, threshold rule): Suggested `risk_label` = 1 when `YoY_Change_CPI_all_item` > team-agreed risk threshold, else 0. Threshold value: `TBD` (Data Engineer + ML Engineer agree in PR).
+- Split point/date: `TBD` (Data Engineer decides, must be chronological — earlier dates train, later dates test).
+- Rows dropped/imputed due to lags: `TBD` (after lag feature engineering; document count).
 
 ## 3. Model contract (ML Engineer → Integration)
 

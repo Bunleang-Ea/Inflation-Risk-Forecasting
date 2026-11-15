@@ -15,9 +15,11 @@
 - **Merge back quickly** at each handoff (same day). Open a PR → get a quick review → merge → branch again from updated `main`.
 - **Sync from `main` daily and open a PR into `main` at every handoff** (end of Nov 14, 15, 16, 17). Never let a branch diverge until the end.
 
-## 0. Pull from `main` before every change
+## 0. Before you start any work
 
-**This is the most important rule.** Before you write a single line, sync your branch with the latest `main`:
+1. **Check open PRs** on the repo — see if someone is already working on what you need.
+2. **Check existing branches** — don't duplicate what's already being built.
+3. **Pull from `main` before every change.** Sync your branch with the latest `main`:
 
 ```bash
 git checkout <your-branch>
