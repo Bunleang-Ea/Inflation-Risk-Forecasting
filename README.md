@@ -55,8 +55,15 @@ graph TD
 1. **`main`** → live preview / deployed app. Don't break it.
 2. **Your role branch** → experiment, test, play around. It's yours.
 3. **To land your work:** open a **PR** from your branch → `main`, get a quick review, merge. Only then does it become real.
-4. **Sync daily:** `git fetch origin && git rebase origin/main` (or merge) so your branch doesn't drift. Rebase before you push/PR.
-5. **Keep `ARCHITECTURE.md` updated** when you change paths, column names, feature order, widget names, or output schemas — in the same PR.
+4. **Pull from `main` EVERY TIME you want to change something.** Before you write a single line:
+   ```bash
+   git checkout <your-branch>
+   git fetch origin
+   git pull --ff-only        # or: git rebase origin/main
+   ```
+   If you don't, you'll be roaming around on an old snapshot and you'll destroy the project. No exceptions.
+5. **Sync daily** as well (`git fetch origin && git rebase origin/main`) so your branch doesn't drift.
+6. **Keep `ARCHITECTURE.md` updated** when you change paths, column names, feature order, widget names, or output schemas — in the same PR.
 
 **Don't be the idiot who changes random things.** If it's not in `ARCHITECTURE.md`, don't touch it without a PR first.
 
