@@ -50,20 +50,21 @@ graph TD
 | `IN` | `Streamlit-Integration-Engineer` |
 | `VS` | `Visualization-Specialist` |
 
-**The rules in one line:**
+## The rules in one line:
 
 1. **`main`** → live preview / deployed app. Don't break it.
 2. **Your role branch** → experiment, test, play around. It's yours.
 3. **To land your work:** open a **PR** from your branch → `main`, get a quick review, merge. Only then does it become real.
-4. **Pull from `main` EVERY TIME you want to change something.** Before you write a single line:
+4. **Before you start any work:** check **open PRs** and **existing branches** on GitHub so you don't duplicate what someone else already did. If a PR/branch exists for your task, build on top of it instead.
+5. **Pull from `main` EVERY TIME you want to change something.** Before you write a single line:
    ```bash
    git checkout <your-branch>
    git fetch origin
    git pull --ff-only        # or: git rebase origin/main
    ```
    If you don't, you'll be roaming around on an old snapshot and you'll destroy the project. No exceptions.
-5. **Sync daily** as well (`git fetch origin && git rebase origin/main`) so your branch doesn't drift.
-6. **Keep `ARCHITECTURE.md` updated** when you change paths, column names, feature order, widget names, or output schemas — in the same PR.
+6. **Sync daily** as well (`git fetch origin && git rebase origin/main`) so your branch doesn't drift.
+7. **Keep `ARCHITECTURE.md` updated** when you change paths, column names, feature order, widget names, or output schemas — in the same PR.
 
 **Don't change things outside `ARCHITECTURE.md` without a PR first.** If a path, column name, feature order, widget name, or output schema isn't documented there, don't touch it — open a PR and update the contract in the same change.
 
