@@ -14,12 +14,12 @@ The other 5 branches are **separate experiment sandboxes** — each member's own
 
 ```mermaid
 graph TD
-    Main["main = real project<br/>live preview / deployed"]
-    DE["Data-Engineer<br/>(sandbox)"]
-    UI["Streamlit-UI-Developer<br/>(sandbox)"]
-    ML["Machine-Learning-Engineer<br/>(sandbox)"]
-    IN["Streamlit-Integration-Engineer<br/>(sandbox)"]
-    VS["Visualization-Specialist<br/>(sandbox)"]
+    Main["main (real project)"]
+    DE["Data Engineer"]
+    UI["UI Developer"]
+    ML["ML Engineer"]
+    IN["Integration Eng"]
+    VS["Viz Specialist"]
     PR["PR → review → merge"]
 
     Main -.-> DE
@@ -36,6 +36,17 @@ graph TD
 
     PR --> Main
 ```
+
+**Branch map (short labels above → full branch names):**
+
+| Label | Full branch name |
+|---|---|
+| `main` | `main` — the real project, live preview / deployed |
+| `DE` | `Data-Engineer` |
+| `UI` | `Streamlit-UI-Developer` |
+| `ML` | `Machine-Learning-Engineer` |
+| `IN` | `Streamlit-Integration-Engineer` | 
+| `VS` | `Visualization-Specialist` |
 
 **The rules in one line:**
 
