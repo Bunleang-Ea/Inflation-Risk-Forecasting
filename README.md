@@ -6,12 +6,53 @@ Streamlit + Machine Learning app to forecast inflation risk using Cambodia infla
 - **Deadline:** Nov 18, 2026
 - **Deploy target:** Streamlit Community Cloud (`main` branch)
 
-## Team workflow (read before coding)
+## Team Work Flow
 
-- **[`ARCHITECTURE.md`](./ARCHITECTURE.md)** — source of truth for architecture, paths, data/model/UI interfaces, and handoff schemas. **Read before touching the project.** Everyone (and LLM prompts) must follow it.
-- **[`CONTRIBUTING.md`](./CONTRIBUTING.md)** — branching, PR/handoff rules, and LLM hygiene to avoid drift.
+**`main` = the real project.** Only reviewed, working code lives here. It is what gets deployed (Streamlit Community Cloud → live preview URL).
 
-**TL;DR:** `main` stays deployable. Use short-lived task branches off `main`, open small PRs at each handoff, and keep `ARCHITECTURE.md` updated when interfaces change.
+The other 5 branches are **separate experiment sandboxes** — each member's own workspace. They are *not* the real project. Never commit directly to `main` from a sandbox branch; always go through a PR.
+
+```mermaid
+gitGraph
+    commit tag: "main (deployable)"
+    branch Data-Engineer
+    branch Streamlit-UI-Developer
+    branch Machine-Learning-Engineer
+    branch Streamlit-Integration-Engineer
+    branch Visualization-Specialist
+    main
+    checkout Data-Engineer
+    commit
+    checkout main
+    merge Data-Engineer
+    checkout Streamlit-UI-Developer
+    commit
+    checkout main
+    merge Streamlit-UI-Developer
+    checkout Machine-Learning-Engineer
+    commit
+    checkout main
+    merge Machine-Learning-Engineer
+    checkout Streamlit-Integration-Engineer
+    commit
+    checkout main
+    merge Streamlit-Integration-Engineer
+    checkout Visualization-Specialist
+    commit
+    checkout main
+    merge Visualization-Specialist
+    commit tag: "deploy"
+```
+
+**The rules in one line:**
+
+1. **`main`** → live preview / deployed app. Don't break it.
+2. **Your role branch** → experiment, test, play around. It's yours.
+3. **To land your work:** open a **PR** from your branch → `main`, get a quick review, merge. Only then does it become real.
+4. **Sync daily:** `git fetch origin && git rebase origin/main` (or merge) so your branch doesn't drift. Rebase before you push/PR.
+5. **Keep `ARCHITECTURE.md` updated** when you change paths, column names, feature order, widget names, or output schemas — in the same PR.
+
+**Don't be the idiot who changes random things.** If it's not in `ARCHITECTURE.md`, don't touch it without a PR first.
 
 ## Project schedule (WBS)
 
