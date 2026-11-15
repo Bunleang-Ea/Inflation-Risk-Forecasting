@@ -20,7 +20,7 @@ graph TD
     ML["ML Engineer"]
     IN["Integration Eng"]
     VS["Viz Specialist"]
-    PR["PR → review → merge"]
+    PR["PR"]
 
     Main -.-> DE
     Main -.-> UI
@@ -37,6 +37,8 @@ graph TD
     PR --> Main
 ```
 
+**Flow:** each sandbox branch → **PR** → review → merge → `main`. (`PR` node above = the pull request step.)
+
 **Branch map (short labels above → full branch names):**
 
 | Label | Full branch name |
@@ -45,7 +47,7 @@ graph TD
 | `DE` | `Data-Engineer` |
 | `UI` | `Streamlit-UI-Developer` |
 | `ML` | `Machine-Learning-Engineer` |
-| `IN` | `Streamlit-Integration-Engineer` | 
+| `IN` | `Streamlit-Integration-Engineer` |
 | `VS` | `Visualization-Specialist` |
 
 **The rules in one line:**
