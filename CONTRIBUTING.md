@@ -17,6 +17,18 @@
 - **Merge back quickly** at each handoff (same day). Open a PR → get a quick review → merge → branch again from updated `main`.
 - **If you must keep a personal/role branch:** treat it as a workspace only. **Sync from `main` daily and open a PR into `main` at every handoff** (end of Nov 14, 15, 16, 17). Never let a branch diverge until the end.
 
+## 0. Pull from `main` before every change
+
+**This is the most important rule.** Before you write a single line, sync your branch with the latest `main`:
+
+```bash
+git checkout <your-branch>
+git fetch origin
+git pull --ff-only          # or: git rebase origin/main
+```
+
+If you don't, you're roaming around on an old snapshot and you'll destroy the project. No exceptions. Do this every time you sit down to modify something, not just daily.
+
 ## 2. Handoffs & schedule (align PRs to these)
 
 | When | Role | Merge/handoff expectation |
