@@ -4,7 +4,7 @@
 **Repo:** https://github.com/Bunleang-Ea/Inflation-Risk-Forecasting  
 **Deadline:** Nov 18, 2026 — deploy `main` to Streamlit Community Cloud
 
-> Read [`CONTRACT.md`](./CONTRACT.md) first. It defines paths, data/model/UI interfaces, and handoff schemas. Code to the contract.
+> **Read [`ARCHITECTURE.md`](./ARCHITECTURE.md) first (before touching the project).** It defines the architecture, paths, data/model/UI interfaces, and handoff schemas. Code to it.
 
 ---
 
@@ -21,9 +21,9 @@
 
 | When | Role | Merge/handoff expectation |
 |---|---|---|
-| Nov 13–14 | Data Engineer | PR with processed datasets + updated `CONTRACT.md` §2 (features/target/split). Notify team. |
-| Nov 13–14 | Streamlit UI Dev | PR with `app.py` skeleton, widget var names & chart slots documented in `CONTRACT.md` §4. |
-| Nov 15 | ML Engineer | PR with `models/model.pkl` + `CONTRACT.md` §3 (feature order/dtypes, metrics). |
+| Nov 13–14 | Data Engineer | PR with processed datasets + updated `ARCHITECTURE.md` §2 (features/target/split). Notify team. |
+| Nov 13–14 | Streamlit UI Dev | PR with `app.py` skeleton, widget var names & chart slots documented in `ARCHITECTURE.md` §4. |
+| Nov 15 | ML Engineer | PR with `models/model.pkl` + `ARCHITECTURE.md` §3 (feature order/dtypes, metrics). |
 | Nov 16 | Integration Engineer | PR wiring widgets → model → predictions; outputs documented for Viz. |
 | Nov 17 | Visualization Specialist | PR with Altair charts embedded; verify responsive updates with UI. |
 | Nov 18 | Entire Team | Final cleanup, pinned `requirements.txt`, deploy `main`, smoke test live URL. |
@@ -31,7 +31,7 @@
 ## 3. PR checklist (required before merge)
 
 - [ ] **Runs locally** (`streamlit run app.py` where applicable) — no crashes on the touched path.
-- [ ] **Matches `CONTRACT.md`** (paths, column/feature names & order, widget vars, output schema). If changed, contract updated in the same PR.
+- [ ] **Matches `ARCHITECTURE.md`** (paths, column/feature names & order, widget vars, output schema). If changed, `ARCHITECTURE.md` updated in the same PR.
 - [ ] **Small & focused** — one task/handoff per PR when possible; easier to review and revert.
 - [ ] **No junk** — remove debug prints, commented-out experiments, unused imports, stray notebooks/output not needed.
 - [ ] **Artifacts in agreed locations** (e.g. `data/processed/*.csv`, `models/model.pkl`).
@@ -39,10 +39,10 @@
 
 ## 4. Working with LLMs (to avoid drift)
 
-- **Prompt against the contract:** include relevant `CONTRACT.md` sections (paths, feature names/order, widget/output names) in your prompt so generated code matches interfaces.
+- **Prompt against the architecture/contract:** include relevant `ARCHITECTURE.md` sections (paths, feature names/order, widget/output names) in your prompt so generated code matches interfaces.
 - **Don’t paste giant blind dumps.** Generate/review in small chunks you understand; verify shapes, column names, and file paths.
 - **Test before PR.** Run the code, check outputs (no NaN leakage, correct feature order, model loads, chart renders).
-- **Commit readable diffs.** Keep generated code tidy; don’t rename/move agreed paths unless updating the contract.
+- **Commit readable diffs.** Keep generated code tidy; don’t rename/move agreed paths unless updating `ARCHITECTURE.md`.
 
 ## 5. Integration basics
 

@@ -8,10 +8,10 @@ Streamlit + Machine Learning app to forecast inflation risk using Cambodia infla
 
 ## Team workflow (read before coding)
 
-- **[`CONTRACT.md`](./CONTRACT.md)** — source of truth for paths, data/model/UI interfaces, and handoff schemas. Everyone (and LLM prompts) must follow it.
+- **[`ARCHITECTURE.md`](./ARCHITECTURE.md)** — source of truth for architecture, paths, data/model/UI interfaces, and handoff schemas. **Read before touching the project.** Everyone (and LLM prompts) must follow it.
 - **[`CONTRIBUTING.md`](./CONTRIBUTING.md)** — branching, PR/handoff rules, and LLM hygiene to avoid drift.
 
-**TL;DR:** `main` stays deployable. Use short-lived task branches off `main`, open small PRs at each handoff, and keep the contract updated when interfaces change.
+**TL;DR:** `main` stays deployable. Use short-lived task branches off `main`, open small PRs at each handoff, and keep `ARCHITECTURE.md` updated when interfaces change.
 
 ## Project schedule (WBS)
 
@@ -43,7 +43,7 @@ app.py
 data/raw/                  # source CSV
 data/processed/            # train.csv, test.csv
 models/                    # model.pkl
-CONTRACT.md                # interface contract
+ARCHITECTURE.md            # architecture & interface contract
 CONTRIBUTING.md            # workflow rules
 requirements.txt           # pinned deps (for deploy)
 ```

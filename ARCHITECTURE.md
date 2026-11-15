@@ -1,9 +1,10 @@
-# Project Contract — Inflation Risk Forecasting
+# Project Architecture & Contract — Inflation Risk Forecasting
 
 **Repo:** Bunleang-Ea/Inflation-Risk-Forecasting  
 **Goal:** Streamlit + ML app forecasting inflation risk using `Cambodia'sInflationRate2005-2025.csv`  
 **Deadline:** Nov 18, 2026 (deploy `main` to Streamlit Community Cloud)  
-**Rule:** Everyone (and your LLM prompts) codes to this contract. If something must change, update this file in a PR *before* changing code.
+
+> **Read this before touching the project.** This is the source of truth for architecture, repo layout, and handoff interfaces. Everyone (and your LLM prompts) must code to this contract. If something must change, update this file in a PR *before* changing code.
 
 ---
 
@@ -22,7 +23,7 @@
 │   └── model.pkl                  # Serialized best model (joblib/pickle)
 ├── notebooks/                     # Optional exploration only (not used by app)
 ├── requirements.txt               # Pinned versions for deploy
-├── CONTRACT.md
+├── ARCHITECTURE.md
 └── CONTRIBUTING.md
 ```
 
