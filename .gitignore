@@ -1,0 +1,42 @@
+# Virtual Environments
+.venv/
+venv/
+env/
+.env/
+
+# Python Cache & Compiled Files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environment Variables & Secrets
+.env
+.env.local
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Machine Learning Models & Outputs
+*.pkl
+*.joblib
+*.model
+*.h5
+
+# OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Streamlit specific
+.streamlit/secrets.toml

@@ -10,24 +10,29 @@
 
 ## 1. Repo layout (agreed paths)
 
-```
+```text
 .
-├── app.py                         # Streamlit entrypoint (UI + integration + viz embed)
 ├── data/
 │   ├── raw/
 │   │   └── Cambodia'sInflationRate2005-2025.csv
 │   └── processed/
 │       ├── train.csv
 │       └── test.csv
+├── env/                           # Virtual environment folder (added to .gitignore)
 ├── models/
+│   ├── .gitkeep                   # To preserve the empty folder in version control
 │   └── model.pkl                  # Serialized best model (joblib/pickle)
 ├── notebooks/                     # Optional exploration only (not used by app)
+│   └── .gitkeep                   # To preserve the empty folder in version control
+├── pages/                         # Streamlit multi-page directory
+│   ├── 1_📈_Historical_Trends.py 
+│   ├── 2_🔮_Risk_Forecast.py     
+│   └── 3_📊_Model_Metrics.py     
+├── app.py                         # Streamlit entrypoint (Home/Landing page)
+├── utils.py                       # Shared functions (data loading, model loading)
 ├── requirements.txt               # Pinned versions for deploy
 ├── ARCHITECTURE.md
 └── CONTRIBUTING.md
-```
-
-> If you need extra modules, keep them importable from `app.py` (e.g. `src/`), but don’t move/rename the contract paths above without a PR updating this doc.
 
 ## 2. Data contract (Data Engineer → downstream)
 
@@ -58,40 +63,44 @@
 **Requirements:**
 - Train baseline in Scikit-learn (e.g. LogisticRegression/RandomForest for classification, or LinearRegression for regression).
 - Evaluate on the **chronological test set** (F1 for classification, RMSE for regression) — record metrics below.
-- App must be able to load the model with `joblib.load()` under `@st.cache_resource` without version conflicts.
+- App must be able to load the model with `joblib.load()` under `@st.cache_resource` in `utils.py` without version conflicts.
 
 **Model card (ML Engineer fills in via PR):**
 - Problem type: `classification | regression` — `TBD`
 - Library/serializer: `joblib|pickle`, `scikit-learn==TBD`
 - Metric(s) on test: `TBD`
-- **Expected input features (EXACT order and dtypes):** `TBD`  
+- **Expected input features (EXACT order and dtypes):** `TBD`
   *(Integration must build inputs to match this exactly.)*
 - Prediction output: `TBD` (e.g. class label, probability, or numeric forecast value)
 
 ## 4. UI & integration contract (UI ↔ Integration ↔ Viz)
 
-**Entry point:** `app.py`
+**Entry points:** `app.py` (Landing), `pages/1_📈_Historical_Trends.py`, `pages/2_🔮_Risk_Forecast.py`, `pages/3_📊_Model_Metrics.py`
+**Shared Utilities:** `utils.py`
 
 **UI Developer provides (stable names — agree Day 1):**
-- Sidebar container: `st.sidebar`
-- Widget variables (name → type/widget → meaning): `TBD`  
+- Landing page structure in `app.py`.
+- Shared layout conventions across the `pages/` directory.
+- Sidebar container: `st.sidebar` in `2_🔮_Risk_Forecast.py`.
+- Widget variables (name → type/widget → meaning): `TBD`
   *(e.g. `horizon = st.selectbox(...)`, `scenario_rate = st.slider(...)`)*
-- Main layout: `st.columns()` placeholders/slots for metrics and charts: `TBD`
 
 **Integration Engineer provides:**
-- Cached model load: `model = joblib.load("models/model.pkl")` via `@st.cache_resource`
-- Captures live widget values → formats into DataFrame/NumPy array matching **Section 3 feature order/dtypes exactly**
-- Runs `model.predict(...)` (and `predict_proba` if applicable)
-- Exposes clean, documented prediction outputs for Viz: `TBD` (variable names/structure)
+- Shared data/model caching functions in `utils.py`.
+- Cached model load: `model = joblib.load("models/model.pkl")` via `@st.cache_resource` in `utils.py`.
+- Captures live widget values in `2_🔮_Risk_Forecast.py` → formats into DataFrame/NumPy array matching **Section 3 feature order/dtypes exactly**.
+- Runs `model.predict(...)` (and `predict_proba` if applicable).
+- Exposes clean, documented prediction outputs for Viz: `TBD` (variable names/structure).
 
 **Visualization Specialist provides:**
-- Reads historical data + live prediction outputs from Integration
-- Altair charts (`alt.Chart`), date on x-axis, inflation/risk on y-axis; historical vs forecast layered; high-risk threshold breaches clearly highlighted
-- Renders via `st.altair_chart(chart, use_container_width=True)` into the agreed UI slots
+- Reads historical data + live prediction outputs from Integration in the respective `pages/` files.
+- Altair charts (`alt.Chart`), date on x-axis, inflation/risk on y-axis; historical vs forecast layered; high-risk threshold breaches clearly highlighted.
+- Renders via `st.altair_chart(chart, use_container_width=True)` into the agreed UI slots on `1_📈_Historical_Trends.py` and `2_🔮_Risk_Forecast.py`.
 
 ## 5. Deployment contract (Team, Nov 18)
 
 - Clean unused imports/commented dummy code; clear docs.
+- Ensure `.gitkeep` files are not causing issues, and `env/` is strictly ignored in `.gitignore`.
 - `requirements.txt` with **pinned versions** (e.g. `pandas==...`, `scikit-learn==...`, `streamlit==...`, `altair==...`) matching what trained/ran the model.
 - Deploy **`main`** branch to Streamlit Community Cloud.
 - Smoke test live public URL on multiple devices (laptop/phone).
