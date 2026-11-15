@@ -79,4 +79,5 @@ Thumbs.db
 
 # Local data (keep the folder, ignore raw downloads)
 data/raw/*.csv
+!data/raw/cambodia_inflation_2005_2025.csv
 !data/raw/.gitkeep
