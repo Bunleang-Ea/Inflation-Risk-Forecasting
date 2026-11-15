@@ -15,7 +15,7 @@
 ├── app.py                         # Streamlit entrypoint (UI + integration + viz embed)
 ├── data/
 │   ├── raw/
-│   │   └── Cambodia'sInflationRate2005-2025.csv
+│   │   └── cambodia_inflation_2005_2025.csv
 │   └── processed/
 │       ├── train.csv
 │       └── test.csv
@@ -31,7 +31,7 @@
 
 ## 2. Data contract (Data Engineer → downstream)
 
-**Source:** `data/raw/Cambodia'sInflationRate2005-2025.csv`
+**Source:** `data/raw/cambodia_inflation_2005_2025.csv`
 
 **Processing rules:**
 - Load with Pandas, convert `Date` to datetime, **sort chronologically**.
@@ -95,6 +95,19 @@
 - `requirements.txt` with **pinned versions** (e.g. `pandas==...`, `scikit-learn==...`, `streamlit==...`, `altair==...`) matching what trained/ran the model.
 - Deploy **`main`** branch to Streamlit Community Cloud.
 - Smoke test live public URL on multiple devices (laptop/phone).
+
+## 7. Branch protection (owner only)
+
+**`main` should be protected** so nobody can push to it directly — only via PR. This makes the "don't break main" rule real, not just a suggestion.
+
+**Owner (`Bunleang-Ea`) sets this in the repo UI:**
+1. Go to `Settings` → `Branches` → `Branch protection rules`
+2. Select `main`
+3. Enable **Require a pull request review before merging** (1 reviewer)
+4. Enable **Restrict who can push to this branch** (or leave it for the team)
+5. Save
+
+*Note: branch protection requires **admin** permission on the repo. If you're a collaborator without admin, ask the repo owner (`Bunleang-Ea`) to apply it.*
 
 ## 6. Change control
 

@@ -2,7 +2,7 @@
 
 Streamlit + Machine Learning app to forecast inflation risk using Cambodia inflation data (2005–2025).
 
-- **Dataset:** `data/raw/Cambodia'sInflationRate2005-2025.csv`
+- **Dataset:** `data/raw/cambodia_inflation_2005_2025.csv`
 - **Deadline:** Nov 18, 2026
 - **Deploy target:** Streamlit Community Cloud (`main` branch)
 
@@ -65,7 +65,7 @@ graph TD
 5. **Sync daily** as well (`git fetch origin && git rebase origin/main`) so your branch doesn't drift.
 6. **Keep `ARCHITECTURE.md` updated** when you change paths, column names, feature order, widget names, or output schemas — in the same PR.
 
-**Don't be the idiot who changes random things.** If it's not in `ARCHITECTURE.md`, don't touch it without a PR first.
+**Don't change things outside `ARCHITECTURE.md` without a PR first.** If a path, column name, feature order, widget name, or output schema isn't documented there, don't touch it — open a PR and update the contract in the same change.
 
 ## Project schedule (WBS)
 

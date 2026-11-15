@@ -11,11 +11,9 @@
 ## 1. Branching model
 
 - **`main` = source of truth / always runnable / deployable.** Only reviewed, working code lands here.
-- **Prefer short-lived task branches off `main`** (not permanent per-role branches):
-  - Examples: `data/ingest-clean`, `data/lag-features`, `ui/sidebar`, `ml/baseline-rf`, `integration/wire-model`, `viz/altair-chart`, `chore/requirements`
-  - Naming: `<area>/<short-task>` where area is `data|ui|ml|integration|viz|deploy|docs|fix`
+- **Each member has a dedicated role branch** (e.g. `Data-Engineer`, `Streamlit-UI-Developer`, `Machine-Learning-Engineer`, `Streamlit-Integration-Engineer`, `Visualization-Specialist`). Treat it as your personal sandbox — experiment, test, and play around there. It is *not* the real project.
 - **Merge back quickly** at each handoff (same day). Open a PR → get a quick review → merge → branch again from updated `main`.
-- **If you must keep a personal/role branch:** treat it as a workspace only. **Sync from `main` daily and open a PR into `main` at every handoff** (end of Nov 14, 15, 16, 17). Never let a branch diverge until the end.
+- **Sync from `main` daily and open a PR into `main` at every handoff** (end of Nov 14, 15, 16, 17). Never let a branch diverge until the end.
 
 ## 0. Pull from `main` before every change
 
