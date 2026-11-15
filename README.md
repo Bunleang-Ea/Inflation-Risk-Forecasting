@@ -14,12 +14,12 @@ The other 5 branches are **separate experiment sandboxes** — each member's own
 
 ```mermaid
 graph TD
-    Main["main (real project)"]
-    DE["Data Engineer"]
-    UI["UI Developer"]
-    ML["ML Engineer"]
-    IN["Integration Eng"]
-    VS["Viz Specialist"]
+    Main["main"]
+    DE["Data-Engineer"]
+    UI["UI-Developer"]
+    ML["ML-Engineer"]
+    IN["Integration-Eng"]
+    VS["Viz-Specialist"]
     PR["PR"]
 
     Main -.-> DE
@@ -37,7 +37,7 @@ graph TD
     PR --> Main
 ```
 
-**Flow:** each sandbox branch → **PR** → review → merge → `main`. (`PR` node above = the pull request step.)
+**Flow:** each sandbox branch → **PR** (pull request) → review → merge → `main`.
 
 **Branch map (short labels above → full branch names):**
 
