@@ -102,9 +102,9 @@ Full agreed layout lives in **[`ARCHITECTURE.md` §1 — Repo layout (agreed pat
 ├── models/                        # model.pkl
 ├── notebooks/                     # optional exploration
 ├── pages/                         # Streamlit multi-page app
-│   ├── 1_📈_Historical_Trends.py
-│   ├── 2_🔮_Risk_Forecast.py
-│   └── 3_📊_Model_Metrics.py
+│   ├── 1_Historical_Trends.py
+│   ├── 2_Risk_Forecast.py
+│   └── 3_Model_Metrics.py
 ├── app.py                         # Streamlit entrypoint (home)
 ├── utils.py                       # shared data/model loading
 ├── requirements.txt               # pinned deps for deploy

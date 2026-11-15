@@ -25,9 +25,9 @@
 ├── notebooks/                     # Optional exploration only (not used by app)
 │   └── .gitkeep                   # To preserve the empty folder in version control
 ├── pages/                         # Streamlit multi-page directory
-│   ├── 1_📈_Historical_Trends.py 
-│   ├── 2_🔮_Risk_Forecast.py     
-│   └── 3_📊_Model_Metrics.py     
+│   ├── 1_Historical_Trends.py 
+│   ├── 2_Risk_Forecast.py     
+│   └── 3_Model_Metrics.py     
 ├── app.py                         # Streamlit entrypoint (Home/Landing page)
 ├── utils.py                       # Shared functions (data loading, model loading)
 ├── requirements.txt               # Pinned versions for deploy
@@ -75,27 +75,27 @@
 
 ## 4. UI & integration contract (UI ↔ Integration ↔ Viz)
 
-**Entry points:** `app.py` (Landing), `pages/1_📈_Historical_Trends.py`, `pages/2_🔮_Risk_Forecast.py`, `pages/3_📊_Model_Metrics.py`
+**Entry points:** `app.py` (Landing), `pages/1_Historical_Trends.py`, `pages/2_Risk_Forecast.py`, `pages/3_Model_Metrics.py`
 **Shared Utilities:** `utils.py`
 
 **UI Developer provides (stable names — agree Day 1):**
 - Landing page structure in `app.py`.
 - Shared layout conventions across the `pages/` directory.
-- Sidebar container: `st.sidebar` in `2_🔮_Risk_Forecast.py`.
+- Sidebar container: `st.sidebar` in `2_Risk_Forecast.py`.
 - Widget variables (name → type/widget → meaning): `TBD`
   *(e.g. `horizon = st.selectbox(...)`, `scenario_rate = st.slider(...)`)*
 
 **Integration Engineer provides:**
 - Shared data/model caching functions in `utils.py`.
 - Cached model load: `model = joblib.load("models/model.pkl")` via `@st.cache_resource` in `utils.py`.
-- Captures live widget values in `2_🔮_Risk_Forecast.py` → formats into DataFrame/NumPy array matching **Section 3 feature order/dtypes exactly**.
+- Captures live widget values in `2_Risk_Forecast.py` → formats into DataFrame/NumPy array matching **Section 3 feature order/dtypes exactly**.
 - Runs `model.predict(...)` (and `predict_proba` if applicable).
 - Exposes clean, documented prediction outputs for Viz: `TBD` (variable names/structure).
 
 **Visualization Specialist provides:**
 - Reads historical data + live prediction outputs from Integration in the respective `pages/` files.
 - Altair charts (`alt.Chart`), date on x-axis, inflation/risk on y-axis; historical vs forecast layered; high-risk threshold breaches clearly highlighted.
-- Renders via `st.altair_chart(chart, use_container_width=True)` into the agreed UI slots on `1_📈_Historical_Trends.py` and `2_🔮_Risk_Forecast.py`.
+- Renders via `st.altair_chart(chart, use_container_width=True)` into the agreed UI slots on `1_Historical_Trends.py` and `2_Risk_Forecast.py`.
 
 ## 5. Deployment contract (Team, Nov 18)
 
