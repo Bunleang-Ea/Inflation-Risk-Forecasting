@@ -13,35 +13,28 @@ Streamlit + Machine Learning app to forecast inflation risk using Cambodia infla
 The other 5 branches are **separate experiment sandboxes** — each member's own workspace. They are *not* the real project. Never commit directly to `main` from a sandbox branch; always go through a PR.
 
 ```mermaid
-gitGraph
-    commit tag: "main (deployable)"
-    branch Data-Engineer
-    branch Streamlit-UI-Developer
-    branch Machine-Learning-Engineer
-    branch Streamlit-Integration-Engineer
-    branch Visualization-Specialist
-    main
-    checkout Data-Engineer
-    commit
-    checkout main
-    merge Data-Engineer
-    checkout Streamlit-UI-Developer
-    commit
-    checkout main
-    merge Streamlit-UI-Developer
-    checkout Machine-Learning-Engineer
-    commit
-    checkout main
-    merge Machine-Learning-Engineer
-    checkout Streamlit-Integration-Engineer
-    commit
-    checkout main
-    merge Streamlit-Integration-Engineer
-    checkout Visualization-Specialist
-    commit
-    checkout main
-    merge Visualization-Specialist
-    commit tag: "deploy"
+graph TD
+    Main["main = real project<br/>live preview / deployed"]
+    DE["Data-Engineer<br/>(sandbox)"]
+    UI["Streamlit-UI-Developer<br/>(sandbox)"]
+    ML["Machine-Learning-Engineer<br/>(sandbox)"]
+    IN["Streamlit-Integration-Engineer<br/>(sandbox)"]
+    VS["Visualization-Specialist<br/>(sandbox)"]
+    PR["PR → review → merge"]
+
+    Main -.-> DE
+    Main -.-> UI
+    Main -.-> ML
+    Main -.-> IN
+    Main -.-> VS
+
+    DE --> PR
+    UI --> PR
+    ML --> PR
+    IN --> PR
+    VS --> PR
+
+    PR --> Main
 ```
 
 **The rules in one line:**
