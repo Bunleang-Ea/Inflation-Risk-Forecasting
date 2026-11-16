@@ -73,10 +73,11 @@
 **Entry point:** `app.py`
 
 **UI Developer provides (stable names — agree Day 1):**
-- Sidebar container: `st.sidebar`
-- Widget variables (name → type/widget → meaning): `TBD`  
-  *(e.g. `horizon = st.selectbox(...)`, `scenario_rate = st.slider(...)`)*
-- Main layout: `st.columns()` placeholders/slots for metrics and charts: `TBD`
+- Landing page structure in `app.py`.
+- Shared layout conventions across the `pages/` directory.
+- Sidebar container: `st.sidebar` in `2_Risk_Forecast.py`.
+- Widget variables (name → type/widget → meaning): `forecast_horizon` → `st.slider` → months displayed in the forecast view (3–24, default 12); `risk_threshold` → `st.number_input` → provisional reference level for the UI (default historical 90th percentile). The Integration Engineer may replace the display stub while preserving these names or documenting the new model-backed inputs.
+- Main layout: `st.columns()` placeholders/slots for metrics and charts.
 
 **Integration Engineer provides:**
 - Cached model load: `model = joblib.load("models/model.pkl")` via `@st.cache_resource`
@@ -100,3 +101,19 @@
 
 - Don’t silently change paths, column names, feature order, widget var names, or output schema. **Update this contract in the same PR** and tag affected roles.
 - When in doubt, check this file first — it’s the source of truth for handoffs.
+<<<<<<< Updated upstream
+=======
+
+## 7. Branch protection (owner only)
+
+**`main` should be protected** so nobody can push to it directly — only via PR. This makes the "don't break main" rule real, not just a suggestion.
+
+**Owner (`Bunleang-Ea`) sets this in the repo UI:**
+1. Go to `Settings` → `Branches` → `Branch protection rules`
+2. Select `main`
+3. Enable **Require a pull request review before merging** (1 reviewer)
+4. Enable **Restrict who can push to this branch** (or leave it for the team)
+5. Save
+
+*Note: branch protection requires **admin** permission on the repo. If you're a collaborator without admin, ask the repo owner (`Bunleang-Ea`) to apply it.*
+>>>>>>> Stashed changes
