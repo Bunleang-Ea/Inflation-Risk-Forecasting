@@ -50,7 +50,10 @@
 - `data/processed/test.csv`
 
 **To fill in when data work lands (Data Engineer updates via PR):**
-- Date column name & format: `Date` — `dd/mm/yyyy` (e.g. `1/1/2005`)
+- Date column name & format: `Date` — `m/d/yyyy` (e.g. `12/1/2005` is 1 Dec 2005; the day field is always `1`).
+  **Corrected by Integration Engineer (Nov 18):** this file was documented as `dd/mm/yyyy`, but the
+  raw CSV is month-first. Parsing it as `dd/mm/yyyy` silently turns every row into January of its
+  year. `utils.DATE_FORMAT = "%m/%d/%Y"` now parses it explicitly; Data Engineer to confirm.
 - Feature columns (exact names, in order): `Date, CPI_all_item, MoM_Change_CPI_all_item, YoY_Change_CPI_all_item, CPI_3_Month_Moving_Avg, CPI_12_Month_Moving_Avg, YoY_3_Month_Avg, YoY_12_Month_Avg`
 - Target column name & meaning (e.g. `risk_label` 1/0, threshold rule): Suggested `risk_label` = 1 when `YoY_Change_CPI_all_item` > team-agreed risk threshold, else 0. Threshold value: `TBD` (Data Engineer + ML Engineer agree in PR).
 - Split point/date: `TBD` (Data Engineer decides, must be chronological — earlier dates train, later dates test).
@@ -73,6 +76,30 @@
   *(Integration must build inputs to match this exactly.)*
 - Prediction output: `TBD` (e.g. class label, probability, or numeric forecast value)
 
+**Integration adapter (implemented in `utils.py`, PR from Integration Engineer):**
+
+The app does not hard-code the feature order. At startup `utils.get_feature_names(model)` reads
+`model.feature_names_in_` (recorded automatically by scikit-learn when the model is fitted on a
+DataFrame) and only falls back to `utils.FEATURES` when that attribute is absent. **The ML Engineer
+should therefore fit on a named DataFrame** so the contract is carried by the artifact itself.
+
+| Step | Function | Behaviour |
+|---|---|---|
+| Load | `load_model()` | `joblib.load`, `@st.cache_resource`, pickle fallback |
+| Format | `build_feature_frame(inputs, names, history)` | One row, exact column order, `float`, raises listing unresolved features |
+| Predict | `predict_risk(inputs, model, history, threshold)` | `predict_proba` → `predict` → regressor output; rule-based fallback |
+| Output | `build_forecast(...)` → `Forecast` | Chart-ready history + forecast frame |
+
+Feature resolution order per column: widget input → latest observed value → lag column
+`"<base>_t-<n>"` computed from history. Lag names must follow that pattern for the adapter to
+resolve them; otherwise supply the value as a widget input.
+
+**Interim behaviour (until `models/model.pkl` lands):** `predict_risk` returns a rule-based
+logistic score `1 / (1 + exp(-(value - threshold) / RISK_SPREAD))`, and `build_forecast` projects the
+metric from the last observation toward the sidebar scenario rate with an exponential decay
+(`DECAY_MONTHS = 6`). Both are labelled `source="rule"` in the UI and are replaced automatically when
+the artifact and a matching feature contract exist.
+
 ## 4. UI & integration contract (UI ↔ Integration ↔ Viz)
 
 **Entry points:** `app.py` (Landing), `pages/1_Historical_Trends.py`, `pages/2_Risk_Forecast.py`, `pages/3_Model_Metrics.py`
@@ -82,7 +109,10 @@
 - Landing page structure in `app.py`.
 - Shared layout conventions across the `pages/` directory.
 - Sidebar container: `st.sidebar` in `2_Risk_Forecast.py`.
-- Widget variables (name → type/widget → meaning): `forecast_horizon` → `st.slider` → months displayed in the forecast view (3–24, default 12); `risk_threshold` → `st.number_input` → provisional reference level for the UI (default historical 90th percentile).
+- Widget variables (name → type/widget → meaning), live on `pages/2_Risk_Forecast.py`:
+  - `forecast_horizon` → `st.slider` (3–24, default 12) → months projected in the forecast view.
+  - `scenario_rate` → `st.slider` (observed range ±1, step 0.1) → hypothetical inflation rate (% YoY) the projection reverts toward. **Added by Integration**; UI Developer to own the styling.
+  - `risk_threshold` → `st.slider` (0–max+1, step 0.1) → high-risk reference level (% YoY).
 - Main layout: `st.columns()` placeholders/slots for metrics and charts.
 
 **Integration Engineer provides:**
@@ -90,7 +120,32 @@
 - Cached model load: `model = joblib.load("models/model.pkl")` via `@st.cache_resource` in `utils.py`.
 - Captures live widget values in `2_Risk_Forecast.py` → formats into DataFrame/NumPy array matching **Section 3 feature order/dtypes exactly**.
 - Runs `model.predict(...)` (and `predict_proba` if applicable).
-- Exposes clean, documented prediction outputs for Viz: `TBD` (variable names/structure).
+- **Exposes clean, documented prediction outputs for Viz (stable names):**
+
+  ```python
+  prediction = utils.predict_risk(scenario_inputs, model=model, history=df, threshold=risk_threshold)
+  forecast   = utils.build_forecast(df, horizon=horizon, scenario_rate=scenario_rate,
+                                    threshold=risk_threshold, model=model)
+  forecast_df = forecast.frame
+  ```
+
+  `forecast_df` columns (do not rename):
+
+  | Column | dtype | Meaning |
+  |---|---|---|
+  | `Date` | datetime64 | Month, sorted ascending |
+  | `YoY_Change_CPI_all_item` | float | Inflation metric (% YoY) — plotted on y-axis |
+  | `type` | str | `"Historical"` or `"Forecast"` |
+  | `risk_prob` | float | P(high risk), 0–1 |
+  | `risk_label` | int | 1 = high risk, 0 = not high risk |
+  | `high_risk` | bool | `YoY > risk_threshold` (for colour encoding) |
+
+  Also available: `forecast.history`, `forecast.forecast` (same columns filtered by `type`),
+  `forecast.peak_value`, `forecast.peak_date`, `forecast.source`, plus
+  `prediction.value` / `.probability` / `.label` / `.source`.
+
+**Metric note:** the plotted metric is `YoY_Change_CPI_all_item`, not the CPI index, so thresholds
+are expressed in % YoY (default `RISK_THRESHOLD = 3.0`). Change `utils.VALUE_COL` if the team prefers CPI.
 
 **Visualization Specialist provides:**
 - Reads historical data + live prediction outputs from Integration in the respective `pages/` files.
