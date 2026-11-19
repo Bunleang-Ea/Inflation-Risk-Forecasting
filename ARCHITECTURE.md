@@ -82,8 +82,8 @@
 - Landing page structure in `app.py`.
 - Shared layout conventions across the `pages/` directory.
 - Sidebar container: `st.sidebar` in `2_Risk_Forecast.py`.
-- Widget variables (name → type/widget → meaning): `TBD`
-  *(e.g. `horizon = st.selectbox(...)`, `scenario_rate = st.slider(...)`)*
+- Widget variables (name → type/widget → meaning): `forecast_horizon` → `st.slider` → months displayed in the forecast view (3–24, default 12); `risk_threshold` → `st.number_input` → provisional reference level for the UI (default historical 90th percentile).
+- Main layout: `st.columns()` placeholders/slots for metrics and charts.
 
 **Integration Engineer provides:**
 - Shared data/model caching functions in `utils.py`.
